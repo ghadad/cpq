@@ -11,5 +11,5 @@ COPY package-lock.json /app
 
 RUN npm  install --verbose 
 
-ENTRYPOINT ["npm", "run","dev:ts"]
+ENTRYPOINT ["npm", "run","dev"]
 

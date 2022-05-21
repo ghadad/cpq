@@ -4,7 +4,7 @@ x-common-variables: &common-variables
   MYSQL_USER: sampleuser
   MYSQL_PASSWORD: samplepassword
   MYSQL_DATABASE: sampledb
-  SERVER_PORT: 8000
+  FASTIFY_PORT : 8000
   CLIENT_PORT: 3000
 services:
   mysql:
@@ -62,7 +62,7 @@ services:
     entrypoint:
      - npm 
      - run 
-     - dev:ts
+     - dev
   client:
     build: ./client
     environment:

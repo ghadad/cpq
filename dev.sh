@@ -16,13 +16,13 @@ function do_action () {
      ;;
     restart)
     echo "restart all services :"
-     ./dev.sh stop
-     ./dev.sh up
-     docker-compose ps 
+    docker-compose kill $2
+    docker-compose up
+    docker-compose ps 
     ;;
     start|up)
     echo "Start all services :"
-     docker-compose start
+    docker-compose start
     docker-compose ps 
      ;;
     build)

@@ -1,35 +1,23 @@
-# Fastify & Typescript App
+# Getting Started with [Fastify-CLI](https://www.npmjs.com/package/fastify-cli)
+This project was bootstrapped with Fastify-CLI.
 
-> Fastify & TypeScript starter repository.
+## Available Scripts
 
-## Installation
+In the project directory, you can run:
 
-```bash
-$ git clone https://github.com/Matschik/fastify-typescript-starter.git
-$ cd fastify-typescript-starter
-$ yarn install
-```
+### `npm run dev`
 
-## Usage
+To start the app in dev mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-### Development
-```bash
-# Required: typescript watch compilation
-$ yarn watch
+### `npm start`
 
-# Required: development server with hot reload (nodemon)
-$ yarn dev
+For production mode
 
-# Format with prettier
-$ yarn format
-```
+### `npm run test`
 
-### Production
+Run the test cases.
 
-```bash
-# build for production
-$ yarn build
+## Learn More
 
-# start production app
-$ yarn start
-```
+To learn Fastify, check out the [Fastify documentation](https://www.fastify.io/docs/latest/).
