@@ -1,0 +1,8 @@
+'use strict'
+
+var util = require("util")
+module.exports = async function (fastify, opts) {
+  fastify.get('/:key', async function (request, reply) {
+     return await fastify.QueryManager.execute(request.params.key)
+  })
+}

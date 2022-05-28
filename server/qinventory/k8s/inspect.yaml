@@ -1,0 +1,11 @@
+name: Inspect running pod
+description: Inspect running pod
+tags: 
+  - build
+  - version
+  - container
+result: [ 
+   [1,"dsdsdsds","21121212121"]  ,
+   [1,"dsdsdsds","21121212121"]  
+]
+cols: ["no","col1","col2"]

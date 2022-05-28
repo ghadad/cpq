@@ -23,7 +23,9 @@
     "fastify-cli": "^3.1.0",
     "fastify-plugin": "^3.0.0",
     "find": "^0.3.0",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21",
+    "node-fetch": "^2.6.7"
   },
   "devDependencies": {
     "tap": "^16.1.0"
