@@ -1,0 +1,10 @@
+name: K8s deployments 
+desc: K8s deployments 
+api: 
+  uri: http://api.github.com/users/ghadad
+# datapath: path to data set 
+# username:
+# password: 
+# pkey: 
+# headers: 
+cols: ['id','login']  

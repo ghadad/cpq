@@ -2,11 +2,12 @@ const fetch = require('node-fetch');
 const _ = require('lodash');
 class API {
     executer = true
-    constructor(){
-
+    constructor(fastify){
+        this.fastify = fastify
     }
+    
     async execute(config) {
-        const response = await fetch(config.api.uri, {method: 'GET'});
+        const response = await fetch(config.api.uri, {method: config.api.method || 'GET'});
         let result = await response.json();
         if(config.api.datapath) { 
             result = result[config.api.datapath];
@@ -21,4 +22,4 @@ class API {
     }
 }
 
-module.exports = new API();
+module.exports =  API;

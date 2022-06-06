@@ -1,8 +1,9 @@
 class Result {
     executer = true
-    constructor(){
-
+    constructor(fastify){
+        this.fastify = fastify
     }
+    
     async execute(config) {
         return await config.result;
     }
@@ -12,4 +13,4 @@ class Result {
     }
 }
 
-module.exports = new Result();
+module.exports = Result ;

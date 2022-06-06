@@ -1,0 +1,13 @@
+name: K8s deployments 
+desc: K8s deployments 
+shell: "ls -lrt"
+# datapath: path to data set 
+# username:
+# password: 
+# pkey: 
+# headers: 
+cols: ['permissions','user','group','size','t1','t2','t3','filename']  
+convert: 
+  type: json
+  newline: '[\n\r]+'
+  delim:  '[\t\s]+'

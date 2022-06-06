@@ -7,8 +7,9 @@ class  Validator {
     validate (config) { 
         config = this.normalize(config);
         let result  = {valid:true,config:config}; 
-        try { 
-            assert.ok(config.result && directives.result.validate(config.result),"result directive is invalid");
+        try {
+            if(config.shell)  assert.ok(directives.shell.validate(config.shell),"shell directive is invalid");
+            if(config.result)  assert.ok( directives.result.validate(config.result),"result directive is invalid");
             assert.ok(config.cols &&  Array.isArray(config.cols) == true,"cols directive missing or does not array");
             assert.ok(Object.keys(config).length>0,"No config found");
             assert.ok(config.description  ,"No description found");

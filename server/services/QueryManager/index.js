@@ -11,8 +11,9 @@ const Executer = new require("./Executer");
   name="QueryManager"
   inventoryJson = {} ;
   files = []
-  constructor() {
+  constructor(fastify) {
    this.load();
+   this.fastify = fastify ;
   }
 
   load() {
@@ -28,13 +29,13 @@ const Executer = new require("./Executer");
     return this.inventoryJson;
    }
 
-   async execute(qkey,params={}) {
+   async execute(qkey,params={},sessionParams={db:"db1"}) {
      if(!(qkey in this.inventoryJson) ) {
        throw new Error("sqky " + qkey + " doesn't found in qinvetory")
      }
-     
-     return await Executer.execute(this.inventoryJson[qkey]);
+     Executer.setFastify(this.fastify);
+     return await Executer.execute(this.inventoryJson[qkey],params,sessionParams);
    }
 }
 
-module.exports = new QueryManager();
+module.exports = QueryManager ;

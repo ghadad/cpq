@@ -1,0 +1,5 @@
+name: sql   
+desc: sql  
+sql: |
+  select :literal as literal , sample.* from sample limit :limit
+cols: ['literal','id','name']  

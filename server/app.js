@@ -3,7 +3,9 @@
 const path = require('path')
 const AutoLoad = require('@fastify/autoload')
 require('dotenv').config()
+const Config = require('config');
 
+console.log(Config);
 module.exports = async function (fastify, opts) {
   // Place here your custom code!
 
@@ -14,13 +16,13 @@ module.exports = async function (fastify, opts) {
   // through your application
   fastify.register(AutoLoad, {
     dir: path.join(__dirname, 'plugins'),
-    options: Object.assign({}, opts)
+    options: Object.assign({}, opts,Config)
   })
 
   // This loads all plugins defined in routes
   // define your routes in one of these
   fastify.register(AutoLoad, {
     dir: path.join(__dirname, 'routes'),
-    options: Object.assign({}, opts)
+    options: Object.assign({}, opts,Config)
   })
 }
