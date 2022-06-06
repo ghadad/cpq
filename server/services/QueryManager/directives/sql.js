@@ -13,7 +13,7 @@ class Sql {
     }
 
 
-    validate(val) {
+    static validate(val) {
        return true;
     }
    

@@ -37,7 +37,7 @@ class Shell {
             
     }
 
-    validate(val) {
+   static validate(val) {
         return (typeof val === 'string' || Array.isArray(val)) ;
     }
 

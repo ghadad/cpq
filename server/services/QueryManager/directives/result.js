@@ -8,7 +8,7 @@ class Result {
         return await config.result;
     }
 
-    validate(config) {
+    static  validate(config) {
         return Array.isArray(config) ;
     }
 }
