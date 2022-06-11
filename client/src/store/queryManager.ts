@@ -2,17 +2,27 @@ import { defineStore } from 'pinia'
 import httpClient from '@/http';
 
 export const useQueryManagerStore = defineStore('queryManager',{
-  state: () => {
-    return  {
-    db:"",
-    inventory: {} ,
-    last: [] ,
-    sections:[],
-    activeQuery : {} ,
-    activeParamaters : {}     
-  }},
+  state: () =>  {
+    return  { 
+      db:"",
+      inventory: {} ,
+      last: [] ,
+      section:"",
+      sections:[],
+      activeQuery : {} ,
+      activeParamaters : {}  ,
+      databases :['alpha','ea','production']   
+    }} ,
+
+    persist: true,
 
   getters: {
+    getDB(){
+      return this.db;
+    },
+    getSection() {
+      return this.section;
+    },
     list(){
       return this.inventory;
     },
@@ -28,6 +38,12 @@ export const useQueryManagerStore = defineStore('queryManager',{
   },
 
   actions: {
+    setSection(section) {
+      this.$state.section  = section;
+    },
+    setDB(db) {
+      this.$state.db  = db;
+    },
     clear() { 
 
     },
@@ -51,6 +67,4 @@ export const useQueryManagerStore = defineStore('queryManager',{
       
    }
   }
-},  {
-  persist: true,
-},)
+})

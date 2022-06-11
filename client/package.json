@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@heroicons/vue": "^1.0.6",
     "@vueuse/core": "^8.6.0",
     "axios": "^0.27.2",
     "daisyui": "^2.15.3",

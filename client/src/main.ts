@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import { createPinia } from 'pinia'
+
 import router from './router'
 
 import Vue3EasyDataTable from 'vue3-easy-data-table';
@@ -10,9 +10,14 @@ const app = createApp(App);
 app.component('EasyDataTable', Vue3EasyDataTable);
 import './app.css';   
 
+// pinia 
+import { createPinia } from 'pinia'
+import PersistedState  from 'pinia-plugin-persistedstate'
 
-//app.use(PrimeVue)
-app.use(createPinia())
+const pinia = createPinia().use(PersistedState )
+
+app.use(pinia);
+
 import { useQueryManagerStore  } from '@/store/queryManager'
 
 const qm  =  useQueryManagerStore();
