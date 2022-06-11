@@ -54,20 +54,14 @@ class Shell {
         let result ;
         if(convertConfig.type == "table") {
             result =data.split(new RegExp(convertConfig.newline)).map(e=>e.split(new RegExp(convertConfig.delim)))
-
         }
         
-        if(convertConfig.type == "json") {
+        if(convertConfig.type == "json" || !convertConfig.type) {
             result =data
             .split(new RegExp(convertConfig.newline))
             .map(e=>e.split(new RegExp(convertConfig.delim))
-                                .map((e,index) => { 
-                                    let obj = {};
-                                    obj[config.cols[index]] = e;
-                                    return  obj ;
-                                 })
-                           )
-                
+            .reduce((prev,curr,index) => ({...prev,[config.picks[index]]:curr})))
+  
         }
         return result;
     }

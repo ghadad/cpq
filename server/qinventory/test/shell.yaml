@@ -8,6 +8,6 @@ shell: "ls -lrt"
 # headers: 
 cols: ['permissions','user','group','size','t1','t2','t3','filename']  
 convert: 
-  type: table
+  type: json
   newline: '[\n\r]+'
   delim:  '[\t\s]+'

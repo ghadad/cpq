@@ -1,5 +1,10 @@
-name: sql   
-desc: sql  
+name: sql tester 
+desc: this sql tester check result from database
 sql: |
   select :literal as literal , sample.* from sample limit :limit
-cols: ['literal','id','name']  
+cols: 
+  - text: Literal
+    value: literal
+  - text: Name
+    value: name
+    sortable: true

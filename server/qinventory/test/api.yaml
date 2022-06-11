@@ -1,10 +1,15 @@
 name: K8s deployments 
 desc: K8s deployments 
 api: 
-  uri: http://api.github.com/users/ghadad
-# datapath: path to data set 
+  uri: http://localhost:8000/qmanager/exec/test:result
+  datapath: result
 # username:
 # password: 
 # pkey: 
 # headers: 
-cols: ['id','login']  
+cols: 
+  - text: col1
+    value: col1
+  - text: col2
+    value: col2
+    sortable: true

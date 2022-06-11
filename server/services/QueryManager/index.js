@@ -3,6 +3,7 @@ const find = require("find")
 const fs = require("fs")
 const JsYaml = require("js-yaml");
 const path = require("path");
+const { push } = require("shelljs/commands");
 const Validator = new require("./Validator");
 const Executer = new require("./Executer");
 
@@ -17,12 +18,16 @@ const Executer = new require("./Executer");
   }
 
   load() {
+        const sections =  [];
        this.files = find.fileSync(/\.(yaml|yml)$/, process.env.CQP_INVENTORY);
         this.files.forEach(e => {
           let key = e.replace(process.env.CQP_INVENTORY,'').replace(/^[\\\/]/g,"").replace(/[\/\\]/g,":").replace(/\.(yaml|yml)$/,'')
+          let [section,dum] = key.split(":");
+          if(!sections.includes(section))
+            sections.push(section);
           this.inventoryJson[key] =Validator.validate(JsYaml.load(fs.readFileSync(e,'utf8')))
        });
-       return this.inventoryJson;
+       return { inventory : this.inventoryJson ,sections :sections };
    }
 
    get qInventory() {

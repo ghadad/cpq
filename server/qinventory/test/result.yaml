@@ -1,0 +1,19 @@
+name: Inspect running pod
+description: Inspect running pod
+tags: 
+  - build
+  - version
+  - container
+result:  
+  - no: 1
+    col1: col 1
+    col2: col 2
+  - no: 2
+    col1: ddddd
+    col2: fffff
+cols: 
+  - text: col1
+    value: col1
+  - text: col2
+    value: col2
+    sortable: true

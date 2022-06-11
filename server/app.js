@@ -7,6 +7,9 @@ const Config = require('config');
 
 console.log(Config);
 module.exports = async function (fastify, opts) {
+  fastify.register(require('@fastify/cors'), { 
+    // put your options here
+  })
   // Place here your custom code!
 
   // Do not touch the following lines
@@ -25,4 +28,6 @@ module.exports = async function (fastify, opts) {
     dir: path.join(__dirname, 'routes'),
     options: Object.assign({}, opts,Config)
   })
+
+  
 }

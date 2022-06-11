@@ -2,6 +2,7 @@ const assert = require('assert');
 const AssertionError = assert.AssertionError ;
 const Executer = require("./Executer");
 const directives = require("./directives");
+const _ = require("lodash");
 
 class  Validator { 
     validate (config) { 
@@ -22,7 +23,25 @@ class  Validator {
 
     normalize(config) {
         let executer = Executer.getExecuter(config);
-        return Object.assign(config,{description:config.desc|| config.description,cols:config.cols || config.columns,executer:executer})
+        let cols = config.cols || config.columns ;
+        let normalCols  =  [];
+        let picks = [];
+
+        cols.forEach(function(c) { 
+          let cObject  = {} ;
+          if(typeof c == "object") { 
+            cObject.value = c.value || c.name;
+            cObject.text = c.text || c.title || c.header || cObject.value;
+          } else { 
+            cObject.text = c ;
+            cObject.value = c ;
+          }
+          normalCols.push(cObject);
+          picks.push(cObject.value);
+        })
+        
+        
+        return Object.assign(config,{description:config.desc|| config.description,cols:normalCols,picks:picks,executer:executer})
       }
 
 }

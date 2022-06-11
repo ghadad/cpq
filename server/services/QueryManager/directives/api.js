@@ -9,12 +9,13 @@ class API {
     async execute(config) {
         const response = await fetch(config.api.uri, {method: config.api.method || 'GET'});
         let result = await response.json();
+
         if(config.api.datapath) { 
             result = result[config.api.datapath];
         }
         if(!Array.isArray(result))
             result = [result];
-            return result.map(e=>_.pick(e,config.cols));
+            return result.map(e=>_.pick(e,config.picks));
     }
     
     validate(config) {

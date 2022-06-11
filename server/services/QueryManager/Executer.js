@@ -21,8 +21,10 @@ class Executer extends Base {
     async execute(qObject,params={literal:'literal',limit:3},session) {
         const Executer = directives[qObject.config.executer];
         const executer = new Executer(this.fastify);
-        return {result: await executer.execute(qObject.config,params,session),
-                cols:qObject.config.cols
+        const result = await executer.execute(qObject.config,params,session); 
+        return {result: result.map((e ,index) => Object.assign(e,{$rowId:index})),
+                cols:qObject.config.cols,
+                meta:qObject
             };
     }
 }
