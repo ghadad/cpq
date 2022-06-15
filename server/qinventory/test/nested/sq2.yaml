@@ -1,6 +1,9 @@
 name: K8s deployments 
 desc: K8s deployments 
+starter: true
 result:
+  - [2,2,3,4]
+  - [3]
   - [2]
   - [3]
 cols: ['a','b']  

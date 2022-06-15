@@ -6,9 +6,11 @@ const _ = require("lodash");
 
 class  Validator { 
     validate (config) { 
-        config = this.normalize(config);
-        let result  = {valid:true,config:config}; 
+        
+        let result;
         try {
+            config = this.normalize(config);
+            result = {valid:true,config:config}; 
             if(config.shell)  assert.ok(directives.shell.validate(config.shell),"shell directive is invalid");
             if(config.result)  assert.ok( directives.result.validate(config.result),"result directive is invalid");
             assert.ok(config.cols &&  Array.isArray(config.cols) == true,"cols directive missing or does not array");
@@ -16,7 +18,7 @@ class  Validator {
             assert.ok(config.description  ,"No description found");
             assert.ok(config.name ,"No name found");
         } catch(err) { 
-            result =  {valid:false,err:err,config:config}
+            result =  {valid:false,error:err.message,config:config}
         }
         return result;
     }

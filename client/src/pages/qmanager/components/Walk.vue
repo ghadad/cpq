@@ -11,7 +11,6 @@
    <button class="btn btn-link" title="Refresh"> <RefreshIcon class="h-5 w-5  inline text-purple-400 "/> </button> 
    <button class="btn btn-link" v-show="resultTable=='close'" title="Expand" @click="resultTable='open'"> <PlusIcon class="h-5 w-5  inline text-purple-400 "/> </button> 
    <button class="btn btn-link" v-show="resultTable=='open'" title="Expand" @click="resultTable='close'"> <MinusIcon class="h-5 w-5  inline text-purple-400 "/> </button> 
-
     </h2>
   <div class="div-result" :class="resultTable">
   <EasyDataTable 
@@ -28,7 +27,8 @@
   </EasyDataTable>
 </div>  
     </div>
- <div v-if="debug"> result: {{ tableData }}</div>
+ <div v-if="debug"> start here:     {{qm.starters[qm.section]}}
+</div>
  <!-- The button to open modal -->
 
 

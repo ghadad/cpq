@@ -1,0 +1,11 @@
+name: query number 2 
+desc: query number 2 
+starter: true
+api: 
+  uri: http://api.github.com/users/ghadad
+# datapath: path to data set 
+# username:
+# password: 
+# pkey: 
+# headers: 
+cols: ['id','login']  

@@ -11,6 +11,7 @@
    
     <label for="my-drawer" class="drawer-overlay"></label>
     <ul class="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
+      <li> <label @click="$qm.fetchAll(true)">Refresh qmanager state </label> </li>
       <li> <router-link to="/qmanager/sections">sections</router-link> </li>
       <ul class="ml-7"><li v-for="s in $qm.sections"><router-link :to="'/qmanager/sections/'+s">{{s}}</router-link></li></ul>
       <li> <router-link to="/qmanager/exec/test:shell">test:shell</router-link> </li>

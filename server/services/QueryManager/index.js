@@ -10,36 +10,60 @@ const Executer = new require("./Executer");
 
  class QueryManager { 
   name="QueryManager"
-  inventoryJson = {} ;
-  files = []
+   files = []
+   sections =  [];
+   starters =  new Map();
+   inventory =  new Map();
+
   constructor(fastify) {
    this.load();
    this.fastify = fastify ;
   }
 
   load() {
-        const sections =  [];
+       this.files =[] ;
+      this.sections = [];
+       this.starters.clear() ;
+       this.inventory.clear();
+
        this.files = find.fileSync(/\.(yaml|yml)$/, process.env.CQP_INVENTORY);
         this.files.forEach(e => {
-          let key = e.replace(process.env.CQP_INVENTORY,'').replace(/^[\\\/]/g,"").replace(/[\/\\]/g,":").replace(/\.(yaml|yml)$/,'')
+          let key = e.replace(process.env.CQP_INVENTORY,'')
+                     .replace(/(^[\\\/]|[\\\/]$)/g,"")
+                     .replace(/[\/\\]/g,":")
+                     .replace(/\.(yaml|yml)$/,'')
           let [section,dum] = key.split(":");
-          if(!sections.includes(section))
-            sections.push(section);
-          this.inventoryJson[key] =Validator.validate(JsYaml.load(fs.readFileSync(e,'utf8')))
+
+          if(!this.sections.includes(section))
+          this.sections.push(section);
+
+          const qConfig = Validator.validate(JsYaml.load(fs.readFileSync(e,'utf8')));
+          this.inventory.set(key,{section,...qConfig}) ; 
+          if(qConfig.config.starter) { 
+            if(this.starters.has(section)) {
+              this.starters.get(section).push({section,qKey:key,...qConfig});
+             } else { 
+              this.starters.set(section,[{section,qKey:key,...qConfig}]);
+             }
+          }
        });
-       return { inventory : this.inventoryJson ,sections :sections };
+     
+       return { inventory : Object.fromEntries(this.inventory) ,sections:this.sections , starters:Object.fromEntries(this.starters)  };
    }
 
-   get qInventory() {
-    return this.inventoryJson;
+   getInventory() {
+    return { inventory : Object.fromEntries(this.inventory) ,sections:this.sections , starters:Object.fromEntries(this.starters)  };
    }
 
-   async execute(qkey,params={},sessionParams={db:"db1"}) {
-     if(!(qkey in this.inventoryJson) ) {
-       throw new Error("sqky " + qkey + " doesn't found in qinvetory")
+   
+
+   async execute(qKey,params={},sessionParams={db:"db1"}) {
+     let qConfig =   this.inventory.get(qKey)
+     if(!qConfig ) {
+       throw new Error("sqky " + qKey + " doesn't found in qinvetory")
      }
      Executer.setFastify(this.fastify);
-     return await Executer.execute(this.inventoryJson[qkey],params,sessionParams);
+     return await Executer.execute(qKey,qConfig,params,sessionParams);
    }
 }
 

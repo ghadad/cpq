@@ -2,7 +2,7 @@
 
 const directives = require("./directives");
 const _ = require('lodash');
-const  Executers = ["shell","api","result","cmd","sql","plsql"];
+const  Executers = ["shell","api","result","cmd","sql","plsql","command"];
 const Base = require("./base");
 
 class Executer extends Base { 
@@ -18,13 +18,24 @@ class Executer extends Base {
         return Object.keys(executer)[0];
     }
 
-    async execute(qObject,params={literal:'literal',limit:3},session) {
-        const Executer = directives[qObject.config.executer];
-        const executer = new Executer(this.fastify);
-        const result = await executer.execute(qObject.config,params,session); 
-        return {result: result.map((e ,index) => Object.assign(e,{$rowId:index})),
+    async execute(qKey,qObject,params={literal:'literal',limit:3},session) {
+        let  Executer ; 
+        let  executer ;
+        let  result = [];
+        let error ;
+        try { 
+            Executer= directives[qObject.config.executer];
+            executer = new Executer(this.fastify);
+            result = await executer.execute(qObject.config,params,session); 
+        } catch(e) { 
+            error = e;
+        }
+        
+        return {tableData:  result.map((e ,index) => Object.assign(e,{$rowId:index})),
                 cols:qObject.config.cols,
-                meta:qObject
+                meta:qObject ,
+                qKey:qKey ,
+                error:error
             };
     }
 }

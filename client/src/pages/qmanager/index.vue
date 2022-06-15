@@ -1,20 +1,17 @@
-<script setup lang="ts">
-import Dialog from 'primevue/dialog'
-import Calendar from 'primevue/calendar';
-import Button from 'primevue/button';
-import { useQueryManagerStore  } from '@/store/queryManager'
 
-const qm  =  useQueryManagerStore();
-qm.fetchAll();
-const newMethod = (val: string) => { return val}
-const a = 411
-const value = new Date()
+<template>
+  <div>
+    <StartHere />
+    <Results />
+  </div>
+ </template>
+
+<script setup lang="ts">
+  import  StartHere from './components/StartHere.vue'
+  import  Results from './components/Results.vue'
 
 </script>
 
-<template>
-{{qm.list}}
-</template>
 
 <route lang="yaml">
 meta:

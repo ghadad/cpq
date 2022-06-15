@@ -1,5 +1,6 @@
 name: K8s deployments 
 desc: K8s deployments 
+starter: true
 result:
   - [2]
   - [3]

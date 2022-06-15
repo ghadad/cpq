@@ -1,5 +1,6 @@
 name: sql tester 
 desc: this sql tester check result from database
+starter: true
 sql: |
   select :literal as literal , sample.* from sample limit :limit
 cols: 
