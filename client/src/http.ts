@@ -7,7 +7,7 @@ const apiClient = axios.create({
     "Content-type": "application/json",
     "Access-Control-Allow-Origin": "*",
   },
-  validateStatus: () => true,
+  //validateStatus: () => true,
 }); 
 
 export default apiClient; 

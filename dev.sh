@@ -16,8 +16,8 @@ function do_action () {
      ;;
     restart)
     echo "restart all services :"
-    docker-compose kill $2
-    docker-compose up
+    docker-compose kill $2 
+    docker-compose up --remove-orphans
     docker-compose ps 
     ;;
     start|up)

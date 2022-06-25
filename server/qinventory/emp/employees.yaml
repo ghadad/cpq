@@ -1,0 +1,14 @@
+name: fetch employees
+description: fetch employees
+
+starter: true
+sql: SELECT * FROM `emp`
+columns:
+  - label: Employee name
+    field: ename
+  - label: Employee no
+    field: empno
+  - label: Job
+    field: job
+  - label: Department
+    field: deptno

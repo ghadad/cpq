@@ -14,7 +14,7 @@ const Executer = new require("./Executer");
    sections =  [];
    starters =  new Map();
    inventory =  new Map();
-
+   aliases  = new Map();
   constructor(fastify) {
    this.load();
    this.fastify = fastify ;
@@ -27,8 +27,9 @@ const Executer = new require("./Executer");
        this.inventory.clear();
 
        this.files = find.fileSync(/\.(yaml|yml)$/, process.env.CQP_INVENTORY);
-        this.files.forEach(e => {
-          let key = e.replace(process.env.CQP_INVENTORY,'')
+       for(let file of this.files ){
+        
+          let key = file.replace(process.env.CQP_INVENTORY,'')
                      .replace(/(^[\\\/]|[\\\/]$)/g,"")
                      .replace(/[\/\\]/g,":")
                      .replace(/\.(yaml|yml)$/,'')
@@ -37,8 +38,23 @@ const Executer = new require("./Executer");
           if(!this.sections.includes(section))
           this.sections.push(section);
 
-          const qConfig = Validator.validate(JsYaml.load(fs.readFileSync(e,'utf8')));
+          const qConfig = Validator.validate(JsYaml.load(fs.readFileSync(file,'utf8')));
+
+          if(!qConfig.valid) {
+            console.error(qConfig)
+            continue;
+          }
+            
+          
+          for(let column of qConfig.config.columns) {
+          
+            if(column.alias){
+              this.aliases.set(column.field, column.alias);
+            }
+            
+          }
           this.inventory.set(key,{section,...qConfig}) ; 
+
           if(qConfig.config.starter) { 
             if(this.starters.has(section)) {
               this.starters.get(section).push({section,qKey:key,...qConfig});
@@ -46,13 +62,18 @@ const Executer = new require("./Executer");
               this.starters.set(section,[{section,qKey:key,...qConfig}]);
              }
           }
-       });
+       };
      
-       return { inventory : Object.fromEntries(this.inventory) ,sections:this.sections , starters:Object.fromEntries(this.starters)  };
+       
    }
 
    getInventory() {
-    return { inventory : Object.fromEntries(this.inventory) ,sections:this.sections , starters:Object.fromEntries(this.starters)  };
+    return { 
+      inventory : Object.fromEntries(this.inventory) ,
+      sections:this.sections , 
+      starters:Object.fromEntries(this.starters)  ,
+      aliases:Object.fromEntries(this.aliases)
+    };
    }
 
    
@@ -63,7 +84,7 @@ const Executer = new require("./Executer");
        throw new Error("sqky " + qKey + " doesn't found in qinvetory")
      }
      Executer.setFastify(this.fastify);
-     return await Executer.execute(qKey,qConfig,params,sessionParams);
+     return await Executer.execute(qKey,qConfig,params || {},sessionParams);
    }
 }
 

@@ -1,0 +1,14 @@
+name: fetch employees of department :deptno
+description: fetch employees of department :depto
+
+starter: true
+sql: SELECT * FROM `emp` where deptno = :deptno
+columns:
+  - label: Employee name
+    field: ename
+  - label: Employee no
+    field: empno
+  - label: Job
+    field: job
+  - label: Department no
+    field: deptno

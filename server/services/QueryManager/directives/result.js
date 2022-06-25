@@ -1,4 +1,5 @@
 class Result {
+    name = "result"
     executer = true
     constructor(fastify){
         this.fastify = fastify

@@ -1,7 +1,7 @@
-class Cols {
+class Columns {
     constructor(){
 
     }
 }
 
-module.exports = { key:"cols",instance:new Cols()};
+module.exports = { key:"columns",instance:new Columns()};

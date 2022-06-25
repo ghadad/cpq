@@ -15,10 +15,13 @@ class Executer extends Base {
         else if(executersNumber ==0 ) { 
             throw new Error("no executer found in q config");
         }
-        return Object.keys(executer)[0];
+
+        const Executer = directives[Object.keys(executer)[0]];
+        return  new Executer(this.fastify);
+
     }
 
-    async execute(qKey,qObject,params={literal:'literal',limit:3},session) {
+    async execute(qKey,qObject,params,session) {
         let  Executer ; 
         let  executer ;
         let  result = [];
@@ -28,14 +31,16 @@ class Executer extends Base {
             executer = new Executer(this.fastify);
             result = await executer.execute(qObject.config,params,session); 
         } catch(e) { 
-            error = e;
+            error = e.message + ":"+e.stack;
+            
         }
         
-        return {tableData:  result.map((e ,index) => Object.assign(e,{$rowId:index})),
-                cols:qObject.config.cols,
-                meta:qObject ,
+        return {
+                tableData: result.map((e ,index) => Object.assign(e,{$rowId:index,$active:false})),
+                columns:qObject.config.columns,
+                config:qObject ,
                 qKey:qKey ,
-                error:error
+                error:error || qObject.error
             };
     }
 }

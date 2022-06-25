@@ -1,0 +1,7 @@
+name: sql 2 tester 
+desc: this sql tester check result from database - columns are arrays of strings
+starter: true
+sql: |
+  select :literal as literal , sample.* from sample limit :limit
+cols: ['literal','name','ID']
+ 

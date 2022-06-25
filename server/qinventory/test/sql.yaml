@@ -1,11 +1,24 @@
-name: sql tester 
+name: sql tester
 desc: this sql tester check result from database
 starter: true
 sql: |
   select :literal as literal , sample.* from sample limit :limit
-cols: 
-  - text: Literal
-    value: literal
-  - text: Name
-    value: name
+cols:
+  - field: literal
+    exec: test:shelljson
+  - label: Literal2
+    field: literal
+    exec: test:shell
+  - label: id
+    field: id
+  - label: Name
+    field: Name
     sortable: true
+    exec:
+      - test:sql
+      - test:sql
+  - label: Actions
+    field:
+    exec:
+      - test:sql
+      - test:sql

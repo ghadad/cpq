@@ -2,6 +2,7 @@ var shell = require('shelljs');
 const _ = require('lodash');
 class Command {
     executer = true
+    name = "command"
     constructor(fastify){
         this.fastify = fastify
     }
@@ -52,6 +53,11 @@ class Command {
         return val.join(" ");
     }
 
+            
+    static getParams(config){
+        return (config.command.match(/:\w+/g)||[]).map(e=>e.substr(1))
+    }
+
     convert(data,config) { 
         let convertConfig = config.convert
         let result ;
@@ -63,7 +69,7 @@ class Command {
             result =data
             .split(new RegExp(convertConfig.newline))
             .map(e=>e.split(new RegExp(convertConfig.delim))
-            .reduce((prev,curr,index) => ({...prev,[config.picks[index]]:curr})))
+            .reduce((prev,curr,index) => ({...prev,[config.picks[index]]:curr},{})))
   
         }
         return result;

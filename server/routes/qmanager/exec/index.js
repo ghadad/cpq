@@ -7,6 +7,7 @@ module.exports = async function (fastify, opts) {
   })
 
   fastify.post('/:key', async function (request, reply) {
-    return await fastify.QueryManager.execute(request.params.key,{limit:3,literal:"literal"},{db:"db1"});
+   console.log(request.body)
+    return await fastify.QueryManager.execute(request.params.key,request.body,{db:"db1"});
  })
 }

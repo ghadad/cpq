@@ -18,6 +18,7 @@
     "primeicons": "^5.0.0",
     "primevue": "^3.13.1",
     "vue": "^3.2.16",
+    "vue-good-table-next": "^0.2.1",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {

@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const _ = require('lodash');
 class API {
+    name = "api"
     executer = true
     constructor(fastify){
         this.fastify = fastify
@@ -15,7 +16,12 @@ class API {
         }
         if(!Array.isArray(result))
             result = [result];
-            return result.map(e=>_.pick(e,config.picks));
+            return result.map(e=>Object.assign({},_.pick(e,config.picks)));
+    }
+
+        
+    static getParams(config){
+        return (config.api.match(/:\w+/g)||[]).map(e=>e.substr(1))
     }
     
     validate(config) {

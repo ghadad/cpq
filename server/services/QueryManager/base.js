@@ -1,6 +1,7 @@
-module.exports = class Base { 
+module.exports = class BaseExecuter  { 
     setFastify(fastify) {
          this.fastify = fastify ;
     }
+    
 }
 
