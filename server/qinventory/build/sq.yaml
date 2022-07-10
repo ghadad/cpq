@@ -1,5 +1,0 @@
-name: build config 
-result: [1,2,3]
-starter: true
-cols: ['a','b','c']
-description: build yamle

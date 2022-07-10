@@ -1,0 +1,9 @@
+name: get current callendar
+description: get current callendar
+tags:
+  - date
+  - test
+  - container
+shell: cal;cal
+cols: ["2calendars"]
+pre: true

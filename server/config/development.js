@@ -3,7 +3,7 @@ module.exports=  {
         db1:{
             client: 'mysql',
             connection: {
-              host : 'mysql',
+               host : 'mysql',
               port : 3306,
               user : process.env.MYSQL_USER,
               password : process.env.MYSQL_PASSWORD,
@@ -12,7 +12,6 @@ module.exports=  {
             postProcessResponse: (result, queryContext) => {
                 // TODO: add special case for raw results 
                 // (depends on dialect)
-                console.log(result);
                 if (Array.isArray(result)) {
                   return result.map(row => row);
                 } else {

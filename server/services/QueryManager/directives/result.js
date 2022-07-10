@@ -6,9 +6,18 @@ class Result {
     }
     
     async execute(config) {
-        return await config.result;
+        return await this.convert(config.result,config);
+
     }
 
+    convert(data,config) { 
+        
+        let result  =data
+            .reduce((prev,curr,index) => ({...prev,[config.picks[index]]:curr},{}))
+  
+            console.log("resukt:",result)
+        return result;
+    }
     static  validate(config) {
         return Array.isArray(config) ;
     }

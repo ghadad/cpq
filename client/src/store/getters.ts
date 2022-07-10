@@ -12,7 +12,7 @@
         return this.starters[this.section]
         },
         list(){
-        return this.inventory;
+        return this.queries;
         },
         lastResult() { 
         return this.last ;
@@ -30,8 +30,8 @@
         } ,
         getQueryInfo(k) { 
         return (k) => {
-            if(k in this.inventory)
-            return this.inventory[k];
+            if(k in this.queries)
+            return this.queries[k];
             return null;
         }
         

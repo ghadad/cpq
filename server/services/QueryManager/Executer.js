@@ -27,17 +27,17 @@ class Executer extends Base {
         let  result = [];
         let error ;
         try { 
-            Executer= directives[qObject.config.executer];
+            Executer= directives[qObject.executer];
             executer = new Executer(this.fastify);
-            result = await executer.execute(qObject.config,params,session); 
+            result = await executer.execute(qObject,params,session); 
         } catch(e) { 
             error = e.message + ":"+e.stack;
             
         }
-        
+        console.log(result);
         return {
                 tableData: result.map((e ,index) => Object.assign(e,{$rowId:index,$active:false})),
-                columns:qObject.config.columns,
+                columns:qObject.columns,
                 config:qObject ,
                 qKey:qKey ,
                 error:error || qObject.error

@@ -11,7 +11,6 @@ async function fastifyKnex (fastify, options, next) {
     // test connection 
       await  dbs[db].raw("select 1 from dual").catch((e) => next(e));
     }
-    // test connection 
     fastify.decorate('dbs', dbs)
   }
   next() ;

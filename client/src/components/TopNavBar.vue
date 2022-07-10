@@ -46,7 +46,8 @@
       </ul>
     </div>
     <div class="flex-none">
-      <label for="queries-modal" class="badge badge-lg p-5 badge-primary badge-outline modal-button" title="Query info">
+      <label for="queries-modal" class="cursor-pointer badge badge-lg p-5 badge-primary badge-outline modal-button"
+        title="Query info">
         <LibraryIcon class="h-5 w-5 text-blue-500" /> Queries
       </label>
 
@@ -63,8 +64,14 @@
       </label>
     </div>
     <div class="flex-1 ml-10">
-      <label for="ap-modal" class="badge badge-lg p-5 badge-primary badge-outline">
+      <label for="ap-modal" class="badge badge-lg p-5 badge-primary cursor-pointer badge-outline">
         <SparklesIcon class="h-5 w-5 text-blue-500" /> Active Parameters
+      </label>
+    </div>
+    <div class="flex ml-10">
+      <label for="ap-modal" class="badge badge-lg p-5 badge-primary badge-outline">
+        {{ $qm.$state.paramsChangeCounter }} times : {{ $qm.$state.paramsCalculationsMS }} ms
+
       </label>
     </div>
     <div class="flex-none">
@@ -77,6 +84,7 @@
         </svg>
       </button>
     </div>
+
   </div>
   <QueriesModal />
   <ActiveParametersModal />
@@ -88,7 +96,7 @@ import { DatabaseIcon } from '@heroicons/vue/solid'
 import { ShareIcon } from '@heroicons/vue/solid'
 import { LibraryIcon } from '@heroicons/vue/solid'
 import { useQueryManagerStore } from '@/store/queryManager'
-import QueriesModal from '@/components/QueriesModal.vue'
+import QueriesModal from '@/pages/qmanager/components/QueriesModal.vue'
 import ActiveParametersModal from '@/components/ActiveParametersModal.vue'
 import { SparklesIcon } from '@heroicons/vue/outline'
 

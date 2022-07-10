@@ -1,0 +1,12 @@
+name: fetch departments
+description: fetch departments
+sql: SELECT * from dept
+columns:
+  - label: Department id
+    field: deptno
+  - label: Departmanet name
+    field: dname
+    exec: emp:bydep
+    alias: department_code
+  - label: Location
+    field: loc

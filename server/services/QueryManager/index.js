@@ -13,7 +13,7 @@ const Executer = new require("./Executer");
    files = []
    sections =  [];
    starters =  new Map();
-   inventory =  new Map();
+   queries =  new Map();
    aliases  = new Map();
   constructor(fastify) {
    this.load();
@@ -24,12 +24,12 @@ const Executer = new require("./Executer");
        this.files =[] ;
       this.sections = [];
        this.starters.clear() ;
-       this.inventory.clear();
+       this.queries.clear();
 
-       this.files = find.fileSync(/\.(yaml|yml)$/, process.env.CQP_INVENTORY);
+       this.files = find.fileSync(/\.(yaml|yml)$/, process.env.CQP_REPOSITORY);
        for(let file of this.files ){
         
-          let key = file.replace(process.env.CQP_INVENTORY,'')
+          let key = file.replace(process.env.CQP_REPOSITORY,'')
                      .replace(/(^[\\\/]|[\\\/]$)/g,"")
                      .replace(/[\/\\]/g,":")
                      .replace(/\.(yaml|yml)$/,'')
@@ -46,16 +46,15 @@ const Executer = new require("./Executer");
           }
             
           
-          for(let column of qConfig.config.columns) {
-          
+          for(let column of qConfig.columns) {
             if(column.alias){
               this.aliases.set(column.field, column.alias);
             }
-            
           }
-          this.inventory.set(key,{section,...qConfig}) ; 
 
-          if(qConfig.config.starter) { 
+          this.queries.set(key,{key:key,section,...qConfig}) ; 
+
+          if(qConfig.starter) { 
             if(this.starters.has(section)) {
               this.starters.get(section).push({section,qKey:key,...qConfig});
              } else { 
@@ -67,9 +66,9 @@ const Executer = new require("./Executer");
        
    }
 
-   getInventory() {
+   getQueries() {
     return { 
-      inventory : Object.fromEntries(this.inventory) ,
+      queries : Object.fromEntries(this.queries) ,
       sections:this.sections , 
       starters:Object.fromEntries(this.starters)  ,
       aliases:Object.fromEntries(this.aliases)
@@ -79,7 +78,7 @@ const Executer = new require("./Executer");
    
 
    async execute(qKey,params={},sessionParams={db:"db1"}) {
-     let qConfig =   this.inventory.get(qKey)
+     let qConfig =   this.queries.get(qKey)
      if(!qConfig ) {
        throw new Error("sqky " + qKey + " doesn't found in qinvetory")
      }

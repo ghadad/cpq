@@ -1,7 +1,7 @@
 
 <template>
   <div v-if="tableData.done">
-    <h2 class="text-xl"> {{ tableData.qInfo.config.name }} - {{ tableData.qInfo.config.desc }}
+    <h2 class="text-xl"> {{ tableData.qInfo.name }} - {{ tableData.qInfo.desc }}
 
       <label for="q-info-modal" class="btn btn-link modal-button" title="Query info">
         <InformationCircleIcon class="h-5 w-5 inline  text-blue-500" />
@@ -90,7 +90,6 @@ const getHeaders = function (headers) {
 onMounted(async () => {
   const apiClient = qm.getApiClient;
   const apiResult: any = await apiClient(route.params.id, qm.getActiveParams);
-  console.log(apiResult.data);
   tableData.value.data = apiResult.data.result;
   tableData.value.headers = getHeaders(apiResult.data.columns);
   tableData.value.qInfo = apiResult.data.meta;

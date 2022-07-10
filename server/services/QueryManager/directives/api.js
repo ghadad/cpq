@@ -21,7 +21,7 @@ class API {
 
         
     static getParams(config){
-        return (config.api.match(/:\w+/g)||[]).map(e=>e.substr(1))
+        return (config.api.uri.match(/:\w+/g)||[]).map(e=>e.substr(1))
     }
     
     validate(config) {

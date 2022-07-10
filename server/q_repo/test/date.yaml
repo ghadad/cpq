@@ -1,0 +1,8 @@
+name: get current date
+description: get current date
+tags:
+  - date
+  - test
+  - container
+shell: date
+cols: ["date"]

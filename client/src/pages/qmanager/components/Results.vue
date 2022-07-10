@@ -1,10 +1,10 @@
 <template>
    <div v-for="(dataResult, index) in results" :key="index">
-      <TableDataResult @modal-info="openQInfoModal" :data-result="dataResult" :index="index" />
+      <TableDataResult :data-result="dataResult" :index="index" />
    </div>
    <QInfoModal :q="qInfo" @modal-close="isOpen = false" />
    <!-- 
-
+@modal-info="openQInfoModal"
    <div class="modal">
 
       <div class="modal-box h-full" style="min-width:50%">sss {{ qInfo }}
@@ -19,8 +19,8 @@
             <a class="tab tab-lifted" @click="setTab('columns')" :class="{ 'tab-active': tab == 'columns' }">Json</a>
          </div>
          </p>
-         <p v-show="tab == 'q'" class="py-4">{{ qInfo.config }}</p>
-         <p v-show="tab == 'columns'" class="py-4">{{ qInfo.config }}</p>
+         <p v-show="tab == 'q'" class="py-4">{{ qInfo }}</p>
+         <p v-show="tab == 'columns'" class="py-4">{{ qInfo }}</p>
          <p v-show="tab == 'description'" class="py-4">
          <p>Author</p>
          <p>labels</p>

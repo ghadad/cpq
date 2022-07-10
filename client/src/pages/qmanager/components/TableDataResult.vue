@@ -4,9 +4,9 @@
 
   <div class="mb-3" v-if="tableData.done && !tableData.error">
 
-    <h2 class="pl-3 text-xl border-2 border-gray-300 border-neutral-700 bg-base-300"> {{ tableData.qInfo.config.name }}
+    <h2 class="pl-3 text-xl border-2 border-gray-300 border-neutral-700 bg-base-300"> {{ tableData.qInfo.name }}
       -
-      {{ tableData.qInfo.config.desc }}
+      {{ tableData.qInfo.desc }}
 
       <label for="q-info-modal" @click="$emit('modalInfo', tableData.qInfo)" class="btn btn-link modal-button"
         title="Query info">
@@ -19,33 +19,34 @@
         <TableIcon class=" h-5 w-5 inline  text-blue-500" />
       </button>
       <button class="btn btn-link" title="Download csv">
-        <DocumentDownloadIcon class="h-5 w-5  inline text-purple-400 " />
+        <DocumentDownloadIcon class="h-5 w-5  inline text-blue-400 " />
       </button>
       <button class="btn btn-link" title="Share link">
-        <LinkIcon class="h-5 w-5  inline text-purple-400 " />
+        <LinkIcon class="h-5 w-5  inline text-blue-500 " />
       </button>
       <button class="btn btn-link" title="Refresh">
-        <RefreshIcon class="h-5 w-5  inline text-purple-400 " />
+        <RefreshIcon class="h-5 w-5  inline text-blue-500 " />
       </button>
       <button class="btn btn-link" title="Refresh">
-        <PlayIcon class="h-5 w-5  inline text-navy-400 " />
+        <PlayIcon class="h-5 w-5  inline text-blue-500 " />
       </button>
 
-      <label for="queries-modal" class="badge badge-ghost bg-base-300 modal-button" title="Query info">
+      <label for="queries-modal" class="badge badge-ghost bg-base-300 cursor-pointer modal-button" title="Query info">
         <LibraryIcon class="h-5 w-5 text-blue-500" />
       </label>
-      <button class="btn btn-link" title="Expand" @click="toggle()">
-        <PlusIcon class="h-5 w-5  inline text-purple-400 " v-show="tableData.collapse" />
-        <MinusIcon class="h-5 w-5  inline text-purple-400 " v-show="!tableData.collapse" />
+      <button class="btn float-right btn-link" title="Refresh" @click="remove(props.index)">
+        <XCircleIcon class="h-5 w-5  inline text-blue-500" />
       </button>
-      <button class="btn btn-link" title="Refresh" @click="remove(props.index)">
-        <XCircleIcon class="h-5 w-5  inline text-purple-400" />
+      <button class="btn float-right btn-link" title="Expand" @click="toggle()">
+        <chevron-down-icon class="h-5 w-5  inline text-blue-500 " v-show="tableData.collapse" />
+        <chevron-up-icon class="h-5 w-5  inline text-blue-500 " v-show="!tableData.collapse" />
       </button>
     </h2>
     <div class="div-result">
 
       <vue-good-table v-show="!tableData.collapse" :columns="tableData.columns" :rows="tableData.rows">
         <template #table-row="props">
+
           <span v-if="props.column.exec && typeof props.column.exec == 'string'">
             {{ props.row[props.column.field] }}
             <span style="font-weight: bold; color: blue;"> </span>
@@ -53,26 +54,32 @@
               @click="exec(props.column.exec, $props.index, props.row.originalIndex)" />
           </span>
           <span v-else-if="props.column.exec && typeof Array.isArray(props.column.exec)">
-            <span style="font-weight: bold; color: blue;"></span>
+            <span style=" font-weight: bold; color: blue;"></span>
             <PlayIcon class="h-5 w-5  inline text-slate-500"
               @click="$qm.executeQueryFromResult(props.column.exec, $props.index, props.row.originalIndex)" />
           </span>
           <span v-else-if="props.column.field == '$active'">
             <span style="font-weight: bold; color: blue;"> </span>
-            <PlayIcon class="h-5 w-5 inline"
-              :class="props.row.originalIndex == tableData.activeRow ? 'text-green-400' : 'text-black-400'"
+            <CheckCircleIcon class="h-6 w-6 inline"
+              :class="props.row.originalIndex == tableData.activeRow ? 'text-green-600' : 'text-black-400'"
               @click="$qm.activateRow($props.index, props.row.originalIndex);" />
           </span>
           <span v-else>
-            {{ props.formattedRow[props.column.field] }}
+            <template v-if="tableData.qInfo.pre">
+              <pre> {{ props.formattedRow[props.column.field] }}</pre>
+            </template>
+            <template v-else>
+              {{ props.formattedRow[props.column.field] }}
+            </template>
           </span>
-
         </template>
-
       </vue-good-table>
     </div>
   </div>
   <div class="div-result p-4 rounded alert-error shadow-lg text-white m-2" v-if="tableData.error">
+
+    <label @click="remove(props.index)" class=" btn btn-sm btn-circle float-right">✕</label>
+
     <label class="badge badge-primary p-3 mr-2">Query : {{ tableData.qKey }} </label>{{ tableData.error }}
     <div class="collapse">
       <input type="checkbox" />
@@ -107,13 +114,16 @@ import { MinusIcon } from '@heroicons/vue/outline'
 import { PlusIcon } from '@heroicons/vue/outline'
 import { XCircleIcon } from '@heroicons/vue/solid'
 import { PlayIcon } from '@heroicons/vue/solid'
+import { CheckCircleIcon } from '@heroicons/vue/solid'
 import { LibraryIcon } from '@heroicons/vue/solid'
+import { ChevronDownIcon } from '@heroicons/vue/outline'
+import { ChevronUpIcon } from '@heroicons/vue/outline'
 
 const props = defineProps(['dataResult', 'index']);
 
 const qm = useQueryManagerStore();
 
-const toggle = (index) => qm.toggle(props.index); // =  ref (qm.$state.collapse[props.index] ? qm.$state.collapse[props.index]  : false );
+const toggle = (index) => qm.toggle(props.index);
 
 const remove = (index) => qm.remove(index);
 
@@ -137,7 +147,6 @@ const enrichAndValidateData = () => {
     }
     Object.assign(row, { "$activation": true });
   }
-  console.log("newTableData", newTableData)
   return newTableData;
 };
 
@@ -147,6 +156,7 @@ const activationColElement = () => {
     html: true,
     field: "$active",
     width: "150px",
+    sortable: false,
     activation: true
   }
 }
@@ -158,6 +168,7 @@ const enrichAndValidateColumns = () => {
   }
 
   for (let col of newCols) {
+    col.sortable = col.sortable || false;
     if (!(col.field && col.label))
       throw new Error("bad coulmns structure ")
     if (col.exec)

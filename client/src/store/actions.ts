@@ -1,17 +1,27 @@
 import httpClient from '@/http';
+import { useTimeoutFn } from '@vueuse/core'
+import { toRaw } from 'vue'
+import {cloneDeep} from 'lodash'
+
+
+
+function  createQueriesBySections(list:any[]) {
+  return list ;
+}
+
 const actions  = {
   activeParamsChange() {
-      this.enableQueries();
+    //console.log("changed",this.$state.activeParams)
+   // this.enableQueries();
   },
   resultChange() { 
     const activeParams = {};
-    this.setActiveParams({});
-    
+    let ParamsObject = {} ;
+    const cloneResultSet = cloneDeep(this.$state.resultSet);
     for(const r of this.$state.resultSet) {
       if(!(r.activeRow>=0 && r.tableData[r.activeRow]))
         continue;
-
-       let  ParamsObject =  Object.keys(r.tableData[r.activeRow]).filter(key => !( key.indexOf('$') ==0) ).reduce((obj, key) =>  {
+       let  resultParamsObject =  Object.keys(r.tableData[r.activeRow]).filter(key => !( key.indexOf('$') ==0) ).reduce((obj, key) =>  {
             let newkey = key.toLowerCase();
             obj[newkey] = r.tableData[r.activeRow][key];
             let hasAlias  = this.$state.aliases[key] ;
@@ -21,12 +31,13 @@ const actions  = {
             return obj;
         }, {});
         
-        this.addActiveParams(ParamsObject);
+      ParamsObject = Object.assign(ParamsObject,resultParamsObject);
     }
 
+    this.setActiveParams(ParamsObject);
   },
-    calculateActiveParams(activeParams) {
-        
+    calculateActiveParams() {
+          this.resultChange()
     },
     clearResultSet() {
       this.$state.resultSet  = [];
@@ -69,43 +80,51 @@ const actions  = {
     }, {});
 
        Object.assign(this.$state.activeParams,ParamsObject);
+   
     },
 
     setActiveParams(params){
       this.$state.activeParams =  params;
-      console.log(this.$state.activeParams)
+      this.enableQueries();
+
     },
+
     activateRow(resultIndex,rowIndex) { 
+      let activeParams =  {} ;
       const tableData = this.$state.resultSet[resultIndex]?.tableData ;
+
       for(let i=0 ; i< tableData.length ;i++ ) {
         if(i==rowIndex) {
           tableData[i].$active = true;
-          this.addActiveParams( tableData[i])
+          activeParams = Object.assign(activeParams, tableData[i]);
         }
          else 
          tableData[i].$active = false;
       }
       this.$state.resultSet[resultIndex].activeRow = rowIndex;
       this.remove(resultIndex+1) ;
+      this.resultChange();
     },
     remove(index) {
       if(!this.$state.resultSet[index])
       return ;
       this.$state.resultSet.splice(index,this.$state.resultSet.length-index);
       this.$state.lastInsertedIndex = this.$state.resultSet.length-1;
-      this.calculateActiveParams();
     },
     setActiveDb(db:String) {
       this.$state.db = db ;
     },
     async fetchAll(force=false) {
+      
       if(force == false && this.$state.sections.length>0)
         return ;
       const res = await httpClient.get("http://localhost:8000/qmanager/list")
-      this.$state.inventory  = res.data.inventory;
+      this.$state.queries  = res.data.queries;
+      this.$state.queriesBySection  = createQueriesBySections(this.$state.queries) ;
       this.$state.sections  = res.data.sections;
       this.$state.starters  = res.data.starters;
       this.$state.aliases  = res.data.aliases;
+      this.enableQueries();
     }  ,
    
    async executeQueryFromResult(qKey, resultIndex, rowIndex, options = {starter:false}) {
@@ -151,9 +170,14 @@ const actions  = {
    },
 
    enableQueries() {
-    for (const [qkey, qVal] of Object.entries(this.$state.inventory)) {
-       qVal.enabled =  qVal.config.paramsList.every( p=> this.$state.activeParams[p]) ? true :false ;
+    let now1 =  new Date() ;
+
+    for (const [qkey, qVal] of Object.entries(this.$state.queries)) {
+       qVal['enabled'] =  qVal.paramsList.every( p=> this.$state.activeParams[p]) ? true :false ;
     }
+    let now2 =  new Date() ;
+    this.$state.paramsCalculationsMS = now2.getTime() -now1.getTime();
+    this.$state.paramsChangeCounter++ ;
    }
   } ;
 

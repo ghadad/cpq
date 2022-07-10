@@ -10,9 +10,17 @@ class Shell {
     async execute(config) { 
         let result =  await this.invokdeShell(config);
        
+
         if(config.convert) { 
                  return this.convert(result,config)   
-           }
+          }
+         
+        // we have only one result block   
+        const newReuslt = [{}]  ;
+
+        newReuslt[0][config.columns[0].field] = result ;
+
+        return newReuslt;
     }
 
     async invokdeShell(config) {

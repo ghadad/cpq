@@ -1,0 +1,16 @@
+name: dept starter
+description: fetch departments
+starter: true
+sql: SELECT * from dept
+columns:
+  - label: Department id
+    field: deptno
+  - label: Departmanet name
+    field: dname
+    exec: emp:bydep
+    alias: department_code
+  - label: Location
+    field: loc
+input:
+  - name: limit
+    type: number

@@ -1,7 +1,7 @@
 <template>
   <input type="checkbox" id="q-info-modal" class="modal-toggle" />
 
-  <div class="modal" v-if="props.q.config">
+  <div class="modal" v-if="props.q">
     <div class="modal-box h-full" style="min-width:50%">
       <label for="q-info-modal" class="btn btn-sm btn-circle absolute right-2 top-2" @click="alert(1)">✕</label>
       <h3 class="text-lg font-bold">Query information </h3>
@@ -15,8 +15,8 @@
 
       </div>
       </p>
-      <p v-show="tab == 'q'" class="py-4">{{ props.q.config }}</p>
-      <p v-show="tab == 'columns'" class="py-4">{{ props.q.config.columns }}</p>
+      <p v-show="tab == 'q'" class="py-4">{{ props.q }}</p>
+      <p v-show="tab == 'columns'" class="py-4">{{ props.q.columns }}</p>
       <p v-show="tab == 'description'" class="py-4">
       <p>Author</p>
       <p>labels</p>
@@ -29,7 +29,7 @@
       <p>Author</p>
       <p>Author</p>
       {{ props.q }}</p>
-      <label for="q-info-modal" class="btn btn-circle absolute right-2 bottom-2" @click="alert(1)">x</label>
+      <label for="q-info-modal" class="btn btn-circle absolute right-2 bottom-2">x</label>
     </div>
 
   </div>
