@@ -49,14 +49,17 @@
 
           <span v-if="props.column.exec && typeof props.column.exec == 'string'">
             {{ props.row[props.column.field] }}
-            <span style="font-weight: bold; color: blue;"> </span>
-            <PlayIcon class="h-5 w-5 inline text-slate-500	"
-              @click="exec(props.column.exec, $props.index, props.row.originalIndex)" />
+            <div class="tooltip tooltip-left" :data-tip="'Invoke  ' + props.column.exec">
+              <PlayIcon class="h-5 w-5 inline cursor-pointer text-blue-500"
+                @click="exec(props.column.exec, $props.index, props.row.originalIndex)" />
+            </div>
           </span>
           <span v-else-if="props.column.exec && typeof Array.isArray(props.column.exec)">
-            <span style=" font-weight: bold; color: blue;"></span>
-            <PlayIcon class="h-5 w-5  inline text-slate-500"
-              @click="$qm.executeQueryFromResult(props.column.exec, $props.index, props.row.originalIndex)" />
+
+            <div class="tooltip tooltip-left" data-tip="collapse all sections">
+              <PlayIcon class="h-5 w-5  inline text-navy-500"
+                @click="$qm.executeQueryFromResult(props.column.exec, $props.index, props.row.originalIndex)" />
+            </div>
           </span>
           <span v-else-if="props.column.field == '$active'">
             <span style="font-weight: bold; color: blue;"> </span>
@@ -84,7 +87,7 @@
     <div class="collapse">
       <input type="checkbox" />
       <div class="collapse-title text-xl font-medium ">
-        show table result
+        Display error
       </div>
       <div class="collapse-content">
         <pre class="bg-white text-black p-4">{{ $props }}</pre>
@@ -179,6 +182,7 @@ const enrichAndValidateColumns = () => {
 };
 
 const setUpTableData = () => {
+
   let tableData = {
     rows: [],
     columns: [],

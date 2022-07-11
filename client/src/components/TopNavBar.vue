@@ -97,7 +97,7 @@ import { ShareIcon } from '@heroicons/vue/solid'
 import { LibraryIcon } from '@heroicons/vue/solid'
 import { useQueryManagerStore } from '@/store/queryManager'
 import QueriesModal from '@/pages/qmanager/components/QueriesModal.vue'
-import ActiveParametersModal from '@/components/ActiveParametersModal.vue'
+import ActiveParametersModal from '@/pages/qmanager/components/ActiveParametersModal.vue'
 import { SparklesIcon } from '@heroicons/vue/outline'
 
 

@@ -21,7 +21,10 @@ export const  useQueryManagerStore = () => {
         lastInsertedIndex:0 ,
         aliases:{},
         paramsCalculationsMS : 0 ,
-        paramsChangeCounter: 0 
+        paramsChangeCounter: 0 ,
+        preferences: {
+          alwaysCollapse:true
+        }
       };
     } ,
   

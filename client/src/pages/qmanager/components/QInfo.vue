@@ -10,12 +10,17 @@
     </div>
     <div class="p-4 pl-4 h-4/5 max-h-screen overflow-y-auto flex flex-col flex-grow ">
       <div v-show="tab == 'q'">
-        <h2 class="text-xl">Directive/Executer :{{ props.q.executer }}</h2>
-        <h2 class="">Query</h2>
+        <h2 class="font-medium text-xl">Directive/Executer :{{ props.q.executer }}</h2>
+        <h2 class="font-medium ">Query</h2>
         <pre class="code">{{ props.q[props.q.executer] }}</pre>
       </div>
 
-      <div v-show="tab == 'description'" class="py-4 p-3">{{ props.q.description }}</div>
+      <div v-show="tab == 'description'" class="py-4 p-3">
+        <h2 class="font-medium text-xl bold">{{ props.q.title }}</h2>
+        <h3 class="font-medium  text-xl bold">Query key : {{ props.q.key }}</h3>
+        <h3 class="font-medium text-xl bold">Description</h3>
+        {{ props.q.description }}
+      </div>
       <pre v-show="tab == 'json'" class="py-4 p-3">{{ props.q }}{{ props.q }}</pre>
 
 

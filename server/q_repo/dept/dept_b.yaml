@@ -10,3 +10,19 @@ columns:
     alias: department_code
   - label: Location
     field: loc
+  - label: Department id
+    field: deptno
+  - label: Departmanet name
+    field: dname
+    exec: emp:bydep
+    alias: department_code
+  - label: Location
+    field: loc
+  - label: Department id
+    field: deptno
+  - label: Departmanet name
+    field: dname
+    exec: emp:bydep
+    alias: department_code
+  - label: Location
+    field: loc

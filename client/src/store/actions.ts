@@ -45,15 +45,17 @@ const actions  = {
     addResultSet(result) {
       if(!this.$state.resultSet)
           this.$state.resultSet = [];
-      this.collapse();
+      if(this.$state.preferences.alwaysCollapse) this.collapse();
       this.$state.resultSet.push(result);
       this.$state.lastInsertedIndex = this.$state.resultSet.length-1;
     },
     setSection(section) {
       this.$state.section  = section;
     },
-    setDB(db) {
+    async setDB(db:string) {
+      if(this.$state.db == db)  return ;
       this.$state.db  = db;
+      await this.rexecuteQueriesFromResult() ;
     },
     clear() { 
 
@@ -110,9 +112,35 @@ const actions  = {
       return ;
       this.$state.resultSet.splice(index,this.$state.resultSet.length-index);
       this.$state.lastInsertedIndex = this.$state.resultSet.length-1;
+      this.resultChange();
     },
-    setActiveDb(db:String) {
-      this.$state.db = db ;
+    async rexecuteQueriesFromResult() { 
+      let index = 0 ; 
+      const activeParams = {...this.$state.activeParams };
+      for(let r of [ ...this.$state.resultSet]) {
+        await this.executeQuery(r.qKey);
+        this.setActiveParams(activeParams);
+        this.activateResultRowByParams(index);
+        index++;
+        console.log("index:",index)
+      }
+    },
+    activateResultRowByParams(resultIndex) {
+     let result =   this.$state.resultSet[resultIndex] ;
+     console.log("result :",result.tableData)
+     if(!(result && result.success))
+      return ; 
+      let index = 0 ;
+      for(let row of result.tableData) { 
+        
+        if(Object.keys(row).filter(key => !( key.indexOf('$') ==0) ).every( p=> row[p] ==  this.$state.activeParams[p])){
+          console.log("Active row:",resultIndex,index)
+          this.activateRow(resultIndex,index);
+          break;
+        }
+        index++;
+      }
+      
     },
     async fetchAll(force=false) {
       
@@ -128,7 +156,7 @@ const actions  = {
     }  ,
    
    async executeQueryFromResult(qKey, resultIndex, rowIndex, options = {starter:false}) {
-    this.activateRow(resultIndex, rowIndex);
+     this.activateRow(resultIndex, rowIndex);
      await this.executeQuery(qKey, options);
    },
 
@@ -137,9 +165,9 @@ const actions  = {
     const res:any = await httpClient.post("http://localhost:8000/qmanager/exec/"+qKey,this.$state.activeParams)
     .catch(e => {
       if(e.response) {
-        error = {statusCode:e.response.data.statusCode,message:"execute :[" + qKey +"] "+e.response.data.message}
+        error = {success:false ,statusCode:e.response.data.statusCode,message:"execute :[" + qKey +"] "+e.response.data.message}
       } else if (e.request){ 
-        error = {message:"execute :[" + qKey +"] "+ e.request.AxiosError}
+        error = {success:false,message:"execute :[" + qKey +"] "+ e.request.AxiosError}
       } else  { 
         error = e 
       }
@@ -152,19 +180,19 @@ const actions  = {
     }
 
   if(error)
-      this.addResultSet( {qKey:qKey,...error});
+      this.addResultSet( {success:false,qKey:qKey,...error});
       else {
         let foundResult = false;
         for(let i = 0 ;  i< this.$state.resultSet.length ;i++) {
           if(qKey == this.$state.resultSet[i].qKey) {
-            this.$state.resultSet[i] = {qKey:qKey ,...res.data};
+            this.$state.resultSet[i] = {success:true,qKey:qKey ,...res.data};
             foundResult = true ;
             this.remove(i+1) ;
             break;
           }
         }
         if(!foundResult)
-        this.addResultSet( {qKey:qKey ,...res.data});
+        this.addResultSet( {success:true,qKey:qKey ,...res.data});
       }
 
    },
@@ -173,11 +201,15 @@ const actions  = {
     let now1 =  new Date() ;
 
     for (const [qkey, qVal] of Object.entries(this.$state.queries)) {
-       qVal['enabled'] =  qVal.paramsList.every( p=> this.$state.activeParams[p]) ? true :false ;
+       qVal['enabled'] =  qVal.paramsList.every( p=> p in this.$state.activeParams) ? true :false ;
     }
     let now2 =  new Date() ;
     this.$state.paramsCalculationsMS = now2.getTime() -now1.getTime();
     this.$state.paramsChangeCounter++ ;
+   }
+   ,
+   savePreferences(k:string,val:any) {
+    this.$state.preferences[k]  = val ;
    }
   } ;
 

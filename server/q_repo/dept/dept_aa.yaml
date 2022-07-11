@@ -1,4 +1,4 @@
-name: fetch departments
+name: sum identity of people in division and organizaion group number
 description: /
   A query is really a question or request for data. For example, ''Tell me how many books there are on computer programming'' or ''How many Rolling Stones albums were produced before 1980?'' When we query databases, we can use a common language to get the information. Structured Query Language SQL), is a fairly universal language. There are some different flavors, but once you know the basics you can easily adapt your questions.
   Remember that a database stores information in tables, consisting of rows and columns of information. The database fields are the columns. They tell the database what to store, such as an album title. The rows make up the data. Take a look at this sample data set. The column headings indicate fields, while the data fills in the rows. As it contains information about some albums, the name of the table is appropriately tblAlbum.
