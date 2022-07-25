@@ -71,13 +71,18 @@ const Executer = new require("./Executer");
       queries : Object.fromEntries(this.queries) ,
       sections:this.sections , 
       starters:Object.fromEntries(this.starters)  ,
-      aliases:Object.fromEntries(this.aliases)
+      aliases:Object.fromEntries(this.aliases) ,
+      databases:Object.keys(this.fastify.dbs)
     };
    }
 
    
 
-   async execute(qKey,params={},sessionParams={db:"db1"}) {
+   async execute(qKey,params={},sessionParams={}) {
+     if(params.$db ) {
+       sessionParams.db =  params.$db ;
+     }
+
      let qConfig =   this.queries.get(qKey)
      if(!qConfig ) {
        throw new Error("sqky " + qKey + " doesn't found in qinvetory")

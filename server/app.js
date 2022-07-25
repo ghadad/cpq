@@ -6,7 +6,10 @@ require('dotenv').config()
 const Config = require('config');
 
 console.log(Config);
+ 
 module.exports = async function (fastify, opts) {
+
+ 
   fastify.register(require('@fastify/cors'), { 
     // put your options here
   })
@@ -30,4 +33,7 @@ module.exports = async function (fastify, opts) {
   })
 
   
+ 
+  
 }
+

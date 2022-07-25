@@ -1,7 +1,7 @@
 import httpClient from '@/http';
 import { useTimeoutFn } from '@vueuse/core'
 import { toRaw } from 'vue'
-import {cloneDeep} from 'lodash'
+import {cloneDeep ,get} from 'lodash'
 
 
 
@@ -152,6 +152,7 @@ const actions  = {
       this.$state.sections  = res.data.sections;
       this.$state.starters  = res.data.starters;
       this.$state.aliases  = res.data.aliases;
+      this.$state.databases  = res.data.databases;
       this.enableQueries();
     }  ,
    
@@ -162,11 +163,16 @@ const actions  = {
 
    async executeQuery(qKey,  options = {starter:false}) {
     let error  ;
-    const res:any = await httpClient.post("http://localhost:8000/qmanager/exec/"+qKey,this.$state.activeParams)
+    let db =  this.$state.queries[qKey].db || this.$state.db;
+    console.log(db)
+
+    const res:any = await httpClient.post("http://localhost:8000/qmanager/exec/"+qKey,{...this.$state.activeParams,$db:db})
     .catch(e => {
       if(e.response) {
-        error = {success:false ,statusCode:e.response.data.statusCode,message:"execute :[" + qKey +"] "+e.response.data.message}
+        console.error(e.response)
+        error = {success:false ,statusCode:e.response?.data?.statusCode,message:"execute :[" + qKey +"] "+e.response.data.message}
       } else if (e.request){ 
+        console.error(e.request)
         error = {success:false,message:"execute :[" + qKey +"] "+ e.request.AxiosError}
       } else  { 
         error = e 

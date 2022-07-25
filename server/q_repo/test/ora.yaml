@@ -1,0 +1,5 @@
+name: oracle tester
+desc: oracle  - fetch tables
+starter: true
+sql: select table_name  from user_tables
+cols: ["table_name"]

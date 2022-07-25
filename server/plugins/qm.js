@@ -5,6 +5,8 @@ const fp = require('fastify-plugin');
 // to export the decorators to the outer scope
 const QueryManager = require('../services/QueryManager');
 
+
+
 module.exports = fp(async function (fastify, opts) {
   const qm = new QueryManager(fastify); 
   await fastify.decorate('QueryManager', qm);

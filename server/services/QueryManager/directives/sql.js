@@ -1,5 +1,6 @@
 var fastify = require('fastify');
 const _ = require('lodash');
+const util = require("util")
 class Sql {
     name = "sql";
     executer = true
@@ -10,11 +11,19 @@ class Sql {
     }
     
     async execute(config,params,session) { 
-        console.log("activeParams",params);
-
-        let result =  await this.fastify.dbs[session.db].raw(config.sql,params)
-        return result[0].map(r => { 
-            return Object.keys(r).reduce((acc,e) => {
+      
+        let result ; 
+        try { 
+            const driver =  this.fastify.dbs[session.db];
+             result =  await driver.raw(config.sql,params);
+             console.log(result);
+        } catch(err) {
+            console.error(err) 
+            throw err;
+        }
+        
+        return result.rows.map(r => { 
+            return Object.keys(r).reduce((acc,e) => { 
                 acc[e.toLowerCase()] = r[e];
                 return acc ;
             },{});

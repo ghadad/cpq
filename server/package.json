@@ -25,11 +25,14 @@
     "fastify-cli": "^3.1.0",
     "fastify-plugin": "^3.0.0",
     "find": "^0.3.0",
+    "generic-pool": "^3.8.2",
     "js-yaml": "^4.1.0",
     "knex": "^2.1.0",
     "lodash": "^4.17.21",
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.7",
+    "oracledb": "^5.4.0",
+    "p-all": "^3.0.0",
     "shelljs": "^0.8.5"
   },
   "devDependencies": {

@@ -16,7 +16,7 @@ export const  useQueryManagerStore = () => {
         starters:{},
         activeQuery : {} ,
         activeParams : {}  ,
-        databases :['alpha','ea','production']   ,
+        databases :[]   ,
         resultSet :[],
         lastInsertedIndex:0 ,
         aliases:{},
